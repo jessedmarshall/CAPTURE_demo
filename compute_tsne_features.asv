@@ -1,0 +1,165 @@
+function analysisstruct = compute_tsne_features(MLmatobj,mocapstruct,analysisparams)
+%% look at appendages as well
+chgpsin=8;
+jt_features = cell(1,max(chgpsin));
+jt_features_raw = cell(1,max(chgpsin));
+jt_features_mean = cell(1,max(chgpsin));
+jt_features_std = cell(1,max(chgpsin));
+
+analysisstruct=struct();
+numfiles = size(MLmatobj,2);
+mocapstruct_reduced_agg = cell(1,max(chgpsin));
+tsnefeat_name = cell(0,1);
+for kk =8%ML_features.appendage_gps(ML_features.appendage_gps<6)
+    agg_feat = [];
+    a6_agg = [];
+    a6_agg_nooffset = [];
+    
+    filelength_total = 0;
+    fileuseind =[];
+    
+    featnames_use = {'dyadic_spectrograms_score_wl_appendages_euc','dyadic_spectrograms_score_wl_appendages',...
+        'appendage_pca_score_lengths','appendage_pca_score','appendage_pca_score_euc'};
+    featnumber = [15,15,10,10,10];
+    
+    
+    %% collect features
+    agg_feat_indiv = [];
+    
+    a_vec =cell(1,5);
+    for kz=1:numel(featnames_use)
+        try
+            ahere = MLmatobj.(featnames_use{kz});
+        catch ME
+            ahere = MLmatobj.(featnames_use{kz});
+        end
+        a_vec{kz} = ahere{kk}(:,1:min(size(ahere{kk},2),featnumber(kz)));
+        
+        for rr = 1:size(  a_vec{kz} ,2)
+            tsnefeat_name{end+1} = strcat(featnames_use{kz},'__',num2str(rr));
+        end
+        
+        %issue with a hanging index too long/short
+        agg_feat_indiv = cat(2,agg_feat_indiv,a_vec{kz});
+    end
+    
+    
+    %% do the move frames etc here to match the normal
+    frameshere_temp = MLmatobj.frames_appendage_gps;
+    framesuse = intersect(frameshere_temp{kk},mocapstruct.move_frames);
+    framesuse = framesuse(1:end-1);%in the old code but not sure why
+    framesuse_sub = framesuse(1:analysisparams.tsnegranularity:numel(framesuse));
+    
+    a6{kk} = framesuse_sub;
+    
+    [~,framesuse_aggfeat] = intersect(frameshere_temp{kk},mocapstruct.move_frames);
+    framesuse_aggfeat = framesuse_aggfeat(1:end-1);
+    framesuse_aggfeat = framesuse_aggfeat(1:analysisparams.tsnegranularity:numel(framesuse));
+    
+    a6_agg = cat(1,a6_agg,bsxfun(@plus,reshape(a6{kk},[],1),filelength_total));
+    a6_agg_nooffset = cat(1,a6_agg_nooffset,reshape(a6{kk},[],1));
+    filelength_total = filelength_total+size(mocapstruct.aligned_mean_position,1);
+    
+    fileuseind = cat(1,fileuseind,1*ones(numel(a6{kk}),1));
+
+        
+        %% some weird bug for one animal plus the initial case
+        if numel(agg_feat)==0
+            agg_feat = cat(1,agg_feat,agg_feat_indiv(framesuse_aggfeat,:));
+        else
+            if size(agg_feat_indiv,2) ==size(agg_feat,2)
+                agg_feat = cat(1,agg_feat,agg_feat_indiv(framesuse_aggfeat,:));
+            else
+                fprintf('weird error where one appendage file is the wrong size \n')
+                size(agg_feat)
+                size(agg_feat_indiv)
+                agg_feat = cat(1,agg_feat,zeros(numel(framesuse_aggfeat),size(agg_feat,2)));
+            end
+        end
+
+analysisstruct.tsnefeat_name = tsnefeat_name;
+
+frames_track = reshape(1:size(agg_feat,1),[],1);
+
+jt_features{kk} = agg_feat(frames_track,:);
+analysisstruct.frames_with_good_tracking{kk} = a6_agg(frames_track);
+analysisstruct.frames_tracking_appendages{kk} = (frames_track);
+analysisstruct.subset_of_points_to_plot_tsne_capped{kk} = 1:numel(frames_track);
+analysisstruct.subset_of_points_to_plot_tsne_move{kk} = 1:numel(frames_track);
+analysisstruct.condition_inds{kk} = ones(1,numel(frames_track));
+a6_agg_nooffset = a6_agg_nooffset(frames_track);
+fileuseind_restriced = fileuseind(frames_track);
+%% save raw and various parameters
+jt_features_raw{kk} = agg_feat(frames_track,:);
+jt_features_mean{kk} =  nanmean(jt_features{kk},1);
+jt_features_std{kk} =  nanstd(jt_features{kk},[],1);
+
+jt_features{kk} = bsxfun(@rdivide,bsxfun(@minus,jt_features{kk},...
+    nanmean(jt_features{kk},1)),nanstd(jt_features{kk},[],1));
+
+analysisstruct.jt_features{kk} =jt_features{kk};
+analysisstruct.jt_features_raw{kk} =jt_features_raw{kk};
+analysisstruct.jt_features_mean{kk} =jt_features_mean{kk};
+analysisstruct.jt_features_std{kk} =jt_features_std{kk};
+
+agg_feat = [];
+
+
+%% load in the mocapstruct
+
+fprintf('loading mocap  \n');
+analysisstruct.file_sizes{1} = [];
+for mm =1:numfiles
+    ML_features_matobj_indiv = (ML_features_matobj{kk,mm});
+    
+    frames_with_good_tracking_sub = a6_agg_nooffset(find(fileuseind_restriced==mm));
+    
+    markernames = fieldnames(mocap_matobjs{mm}.markers_preproc);
+    aligned_markers_temp =  mocap_matobjs{mm}.markers_aligned_preproc;
+    preproc_markers_temp =  mocap_matobjs{mm}.markers_preproc;
+    
+    if isfield(mocap_matobjs{mm},'analog')
+        analog_markers_temp =  mocap_matobjs{mm}.analog;
+    end
+    
+    analysisstruct.file_sizes{1} = cat(1,analysisstruct.file_sizes{1}, size(aligned_markers_temp,1));
+    
+    
+   % if ( mm == 1 || ~isfield(mocapstruct_reduced_agg{kk},'markers_preproc'))
+        fieldscopy = {'markernames','fps','links','markercolor','modular_cluster_properties','bad_frames_agg','analog_fps'};
+        for fhere= 1:numel(fieldscopy)
+            mocapstruct_reduced_agg{kk}.(fieldscopy{fhere}) = mocap_matobjs{mm}.(fieldscopy{fhere});
+        end
+        
+        if isfield(mocap_matobjs{mm},'mocapfiletimes' )
+            mocapstruct_reduced_agg{kk}.('mocapfiletimes') = mocap_matobjs{mm}.('mocapfiletimes');
+        else
+            mocapstruct_reduced_agg{kk}.('mocapfiletimes') = [];
+        end
+        
+        
+        for rr = 1:numel(markernames)
+            mocapstruct_reduced_agg{kk}.markers_preproc.(markernames{rr}) = ...
+                preproc_markers_temp.(markernames{rr})(frames_with_good_tracking_sub ,:);
+            
+            mocapstruct_reduced_agg{kk}.markers_aligned_preproc.(markernames{rr}) =...
+                aligned_markers_temp.(markernames{rr})(frames_with_good_tracking_sub ,:);
+        end
+%     else
+%         
+%         for rr = 1:numel(markernames)
+%             mocapstruct_reduced_agg{kk}.markers_preproc.(markernames{rr}) = cat(1, mocapstruct_reduced_agg{kk}.markers_preproc.(markernames{rr}),...
+%                 preproc_markers_temp.(markernames{rr})(frames_with_good_tracking_sub ,:));
+%             
+%             mocapstruct_reduced_agg{kk}.markers_aligned_preproc.(markernames{rr}) = cat(1, mocapstruct_reduced_agg{kk}.markers_aligned_preproc.(markernames{rr}),...
+%                 aligned_markers_temp.(markernames{rr})(frames_with_good_tracking_sub ,:));
+%         end
+%     end
+end
+analysisstruct.mocapstruct_reduced_agg{kk} = mocapstruct_reduced_agg{kk};
+end
+
+end
+
+
+
