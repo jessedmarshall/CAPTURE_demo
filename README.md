@@ -1,8 +1,8 @@
 
 
-## Demo code for CAPTURE and DANNCE preprocessing and behavioral analysis
+# Demo code for CAPTURE and DANNCE preprocessing and behavioral analysis
 
-Main files:
+Main demo files:
 CAPTURE_quickdemo.m
 preprocessing/preprocess_dannce.m
 
