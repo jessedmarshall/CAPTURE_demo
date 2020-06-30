@@ -16,11 +16,11 @@ You can download the DANNCE dataset and test CAPTURE dataset from:
 
 
 ### This code uses functions from the following open source software:
--Chronux: https://www.mathworks.com/matlabcentral/fileexchange/68537-chronux-analysis-software
--Pca Randomized: ()
--MTimesX: https://www.mathworks.com/matlabcentral/fileexchange/25977-mtimesx-fast-matrix-multiply-with-multi-dimensional-support
--Motionmapper: https://github.com/gordonberman/MotionMapper
--Structvars: https://www.mathworks.com/matlabcentral/fileexchange/26216-structure-fields-to-variables?focused=8211475&tab=function
+- Chronux: https://www.mathworks.com/matlabcentral/fileexchange/68537-chronux-analysis-software
+- Pca Randomized: ()
+- MTimesX: https://www.mathworks.com/matlabcentral/fileexchange/25977-mtimesx-fast-matrix-multiply-with-multi-dimensional-support
+- Motionmapper: https://github.com/gordonberman/MotionMapper
+- Structvars: https://www.mathworks.com/matlabcentral/fileexchange/26216-structure-fields-to-variables?focused=8211475&tab=function
 
 **Compatibility**.
 This code has been tested in 64-bit MATLAB 2017b and 2019b running on Windows 10.
