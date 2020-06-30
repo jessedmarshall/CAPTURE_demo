@@ -1,4 +1,4 @@
-![Image](./common/Figure1.png)
+![Image](./Common/demo_figure.png)
 
 
 ### Demo code for kinematic preprocessing and behavioral analysis
@@ -17,7 +17,7 @@ You can download the DANNCE dataset and test CAPTURE dataset from:
 
 ### This code uses functions from the following open source software:
 - Chronux: https://www.mathworks.com/matlabcentral/fileexchange/68537-chronux-analysis-software
-- Pca Randomized: ()
+- Pca_randomized: (old fex function)
 - MTimesX: https://www.mathworks.com/matlabcentral/fileexchange/25977-mtimesx-fast-matrix-multiply-with-multi-dimensional-support
 - Motionmapper: https://github.com/gordonberman/MotionMapper
 - Structvars: https://www.mathworks.com/matlabcentral/fileexchange/26216-structure-fields-to-variables?focused=8211475&tab=function
