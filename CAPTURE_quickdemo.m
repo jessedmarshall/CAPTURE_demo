@@ -1,5 +1,5 @@
 %% Demo for CAPTURE Data
-[fList,pList] = matlab.codetools.requiredFilesAndProducts('CAPTURE_quickdemo.m');
+%[fList,pList] = matlab.codetools.requiredFilesAndProducts('CAPTURE_quickdemo.m');
 
 % relies on following FEX/Open source contributions:
 %Chronux
@@ -20,6 +20,7 @@ animate_markers_nonaligned_fullmovie_demo(mocapstruct,1:10:10000);
 % Create behavioral features
 coefficient_file = 'demo_coefficients.mat';
 overwrite_coefficient=0;
+mocapstruct.modular_cluster_properties.clipped_index{8} = 1:size(mocapstruct.aligned_mean_position,1 );
 MLmatobj = create_behavioral_features(mocapstruct,coefficient_file,overwrite_coefficient);
 
 % perform a tsne embedding using a simple importance sampling

@@ -121,7 +121,7 @@ for kk =8%ML_features.appendage_gps(ML_features.appendage_gps<6)
     
     analysisstruct.file_sizes{1} = cat(1,analysisstruct.file_sizes{1}, size(aligned_markers_temp,1));
        
-    fieldscopy = {'markernames','fps','links','markercolor','modular_cluster_properties','bad_frames_agg','analog_fps'};
+    fieldscopy = {'markernames','fps','links','markercolor','modular_cluster_properties','bad_frames_agg'};
     for fhere= 1:numel(fieldscopy)
         mocapstruct_reduced_agg{kk}.(fieldscopy{fhere}) = mocapstruct.(fieldscopy{fhere});
     end
