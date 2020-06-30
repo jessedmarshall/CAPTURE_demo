@@ -21,6 +21,7 @@ You can download the DANNCE dataset and test CAPTURE dataset from:
 - DANNCE dataset: https://tinyurl.com/y9dwkuwo
 
 ### This code uses functions from the following open source software:
+The software is already included in the utilities folder. 
 - Chronux: https://www.mathworks.com/matlabcentral/fileexchange/68537-chronux-analysis-software
 - Pca_randomized: (old fex function)
 - MTimesX: https://www.mathworks.com/matlabcentral/fileexchange/25977-mtimesx-fast-matrix-multiply-with-multi-dimensional-support
