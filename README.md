@@ -31,7 +31,7 @@ The software is already included in the utilities folder.
 **Compatibility**.
 This code has been tested in 64-bit MATLAB 2017b and 2019b running on Windows 10.
 
-![Image](./Common/Supplemental_Video_5_3.gif)
+![Image](./Common/Supplemental_video_5_3.gif)
 ![Image](./Common/Supplemental_Video_6.gif)
 ![Image](./Common/Supplemental_Video_7.gif)
 ![Image](./Common/Supplemental_Video_8.gif)
