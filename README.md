@@ -15,6 +15,10 @@ preprocessing/preprocess_dannce.m
 CAPTURE_quickdemo.m
 ```
 
+![Image](./Common/fig3.gif)
+![Image](./Common/fig3.gif)
+
+
 ### Data Directories
 You can download the DANNCE dataset and test CAPTURE dataset from:
 - CAPTURE dataset: https://tinyurl.com/ycnn7cd6
