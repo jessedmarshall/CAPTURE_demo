@@ -15,10 +15,6 @@ preprocessing/preprocess_dannce.m
 CAPTURE_quickdemo.m
 ```
 
-![Image](./Common/fig3.gif)
-![Image](./Common/fig3.gif)
-
-
 ### Data Directories
 You can download the DANNCE dataset and test CAPTURE dataset from:
 - CAPTURE dataset: https://tinyurl.com/ycnn7cd6
@@ -34,3 +30,10 @@ The software is already included in the utilities folder.
 
 **Compatibility**.
 This code has been tested in 64-bit MATLAB 2017b and 2019b running on Windows 10.
+
+![Image](./Common/Supplemental_Video_5_3.gif)
+![Image](./Common/Supplemental_Video_6.gif)
+![Image](./Common/Supplemental_Video_7.gif)
+![Image](./Common/Supplemental_Video_8.gif)
+![Image](./Common/Supplemental_Video_9.gif)
+
