@@ -13,7 +13,8 @@ The behavioral analysis script generates a set of *behavioral features* based on
 
 ### Data Directories
 You can download the DANNCE dataset and test CAPTURE dataset from:
-- CAPTURE dataset: https://tinyurl.com/ycnn7cd6
+- Half hour CAPTURE dataset: https://tinyurl.com/ycnn7cd6
+- Full day CAPTURE dataset: https://tinyurl.com/ybj776xe
 - DANNCE dataset: https://tinyurl.com/y9dwkuwo
 
 ### This code uses functions from the following open source software:
