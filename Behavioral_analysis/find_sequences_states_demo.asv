@@ -198,8 +198,6 @@ for ll = 1:numel(timescales)
     xtickangle(90)
     set(gca,'YTick',1:numel(annotation_choose),'YTickLabel',analysisstruct.conditionnames(annotation_choose))
     
-    
-    
     %% save to the hierarchy structure
     hierarchystruct.correlation_histograms{ll} = histsum;
     hierarchystruct.histxrange{ll} = corr_hist_range;
@@ -226,35 +224,22 @@ for ll = 1:numel(timescales)
 end
 
 
-
 fprintf('now starting clustering \n')
 equivclass_fraction_agg = cell(1,numel(timescales));
 normshades_agg = cell(1,numel(timescales));
 behshades_agg = cell(1,numel(timescales));
 behavior_composition_vector = cell(1,numel(timescales));
 
-if strcmp(cases{casehere},'neural')
-    base_annotation = reshape(analysisstruct.annot_reordered{annotation_choose(kk)},1,[]);
-end
-
-if ~params.doclustering
-    return
-end
 for ll = 1:numel(timescales)
     %% clustering step
     fprintf('correlation based clustering over %f points \n',size(clustered_sequences{ll},2))
     
-    if ~strcmp(cases{casehere},'neural')
-        behsuse = find(nanmean(clustered_sequences{ll},2)>0.0001);
-    else
-        behsuse = 1:size(clustered_sequences{ll},1);
-    end
     
-    if numel(clustercutoff)>1
-        clustercutoff_here = clustercutoff(ll);
-    else
+        behsuse = 1:size(clustered_sequences{ll},1);
+    
+  
         clustercutoff_here = clustercutoff;
-    end
+    
     
     nsample = 55000;
     num_obs = size(clustered_sequences{ll}(behsuse,:),2);
@@ -294,18 +279,6 @@ for ll = 1:numel(timescales)
     end
     toc
     
-    %  clustercutoff=0.4
-    % T = cluster(Z,'cutoff',clustercutoff,'criterion','distance','depth',3);
-    color = Z(end-4,3)-eps;
-    
-    
-    %dendrogram(Z,25)
-    axis off
-    
-    % this wasnt great
-    %T = clusterdata(clustered_sequences{ll}','criterion','distance','Cutoff',1.9,'linkage','ward','Depth',3,'distance','euclidean','SaveMemory','on');
-    %figure(44)
-    % imagesc(squareform(pdist(mean_seq_val','euclidean')))
     %% setup the loop over clusters
     seq_inds_cluster_agg{ll} = cell(1,numel(unique(T)));
     conditions_using_seq =cell(1,numel(unique(T)));
@@ -315,45 +288,17 @@ for ll = 1:numel(timescales)
     %% get the number of 'good' clusters
     [un_el,~,ic] = unique(T);
     counts_seq = accumarray(ic,1);
-    goodclust = find(counts_seq>20);
+    goodclust = find(counts_seq>3);
     fprintf('numel clust (min 20 fr) %f for timescale %f \n',  numel(goodclust),timescales(ll)*60);
     [~,gcsorted] = sort(counts_seq(goodclust),'DESCEND');
-    
-    if ll==1
-        num_ex = 5;
-    else
-        num_ex=10;
-    end
-    indsgood=[];
-    for lk = goodclust'
-        indsgood = cat(1,indsgood,randsample(find(ismember(T,lk)),num_ex,'true'));
-    end
-    
-    figure(788+ll)
-    %[H,T,perm] = dendrogram(Z, 25, 'colorthreshold', color);
-    Ztwo = linkage(clustered_sequences{ll}(behsuse,indsgood)','average','correlation');
-    
-    [H,~,~] = dendrogram(Ztwo, 'colorthreshold', 0.7);
-    
-    %  sum_corr = sum(valplot_nonbiased,2);
-    % unstruct_frames = find(sum_corr<30);
-    %      unique_total_inds = unique(round(reshape(bsxfun(@plus,unstruct_frames*decimation_factor,-decimation_factor./2:1:decimation_factor./2),[],1)));
-    %  unique_total_inds(unique_total_inds>numel(base_annotation)) = numel(base_annotation);
-    %  M=animate_markers_aligned_fullmovie(analysisstruct.mocapstruct_reduced_agg{1},find(base_annot_clustered==6))
-    
+       
     allbehshere = reshape(unique(base_annotation),1,[]);
     do_save_videos=0;
     beh_shades_agg = zeros(numel(gcsorted),analysisstruct.density_objects+1);
     behs_in_cluster = [];
     for clusterhere = 1:numel(gcsorted)
         clusterinds = find(T==goodclust(gcsorted(clusterhere)));
-        
-        %% seq inds
-        % ind_cell = cell(0,0);
-        % for kk = clusterinds'
-        %    seq_inds_cluster =  cat(1,seq_inds{(kk),1},seq_inds{kk,2});
-        %       ind_cell{end+1}=unique(reshape(bsxfun(@plus,seq_inds_cluster*decimation_factor,-decimation_factor./2:1:decimation_factor./2),[],1));
-        % end
+
         seq_inds_cluster = unique(cat(1,sequences_inds{ll}{clusterinds,1},...
             sequences_inds{ll}{clusterinds,2}));
         max(seq_inds_cluster)
@@ -376,93 +321,38 @@ for ll = 1:numel(timescales)
         beh_shades(un_el+1) = counts./sum(counts);
         beh_shades(1) = [];
         beh_shades_agg(clusterhere,1:numel(beh_shades)) =beh_shades;
-        %  beh_shades(beh_shades>0.25) = 0.25;
-        %       beh_shades(beh_shades<0.01) = 0.0;
-        
+
         normshades = log2(beh_shades);
         normshades(isinf(normshades)) = -13;
         normshades_agg{ll}{clusterhere} = normshades;
         behshades_agg{clusterhere} = beh_shades_agg;
         
-        
-        
+
         figure(395+ll)
         h1=subplot_tight(7,3,clusterhere)
-        % plot_shaded_tsne(analysisstruct,normshades,[],1,h1)
-        %         plot_shaded_tsne(analysisstruct,normshades,[],1,h1)
+
         plot_shaded_tsne_absolute_alpha(analysisstruct,normshades,[],1,h1,1)
         axis equal
         axis off
         colorbar off
-        %  title(num2str(counts_seq(goodclust(gcsorted(clusterhere)))))
         caxis([0.01 0.25])
-        if strcmp(cases{kkjj},'coarse')
-            fprintf('for cluster %f frac move: %f frac fast %f frac rest %f \n',clusterhere, beh_shades(end-2),beh_shades(end-1),beh_shades(end));
-        end
-        if clusterhere == numel(gcsorted)
-            mkdir(analysisstruct.plotdirectory)
-            set(gcf,'renderer','opengl')
-            print('-depsc',strcat(analysisstruct.plotdirectory,filesep,'sequence_maps',num2str(ll),'.epsc'))
-            print('-dpng',strcat(analysisstruct.plotdirectory,filesep,'sequence_maps',num2str(ll),'.png'))
-        end
+      
         
-        
-        analysisstruct.clusternames_sorted=analysisstruct.clusternames;
-        
-        figure(495+ll)
-        h1=subplot_tight(7,3,clusterhere)
-        uniquevals = unique(analysisstruct.clusternames_sorted );
-        unique_equivclass = cell(1,numel(uniquevals));
-        equivclass_fraction = zeros(1,numel(uniquevals));
-        for zz = 1:numel(uniquevals)
-            unique_equivclass{zz} = find(strcmp(analysisstruct.clusternames_sorted ,uniquevals{zz}));
-            equivclass_fraction(zz) = sum(squeeze(beh_shades_agg(clusterhere,(unique_equivclass{zz}))));
-        end
-        bar(equivclass_fraction(analysisstruct.behavior_order_numbers),'FaceColor',[0.5 .5 .5],'EdgeColor','none')
-        box off
-        if clusterhere>(numel(gcsorted)-2)
-            set(gca,'XTick',1:numel(equivclass_fraction),'XTickLabels',uniquevals(analysisstruct.behavior_order_numbers))
-            xtickangle(90)
-            
-            figure(499)
-            bar(equivclass_fraction(analysisstruct.behavior_order_numbers),'FaceColor',[0.5 .5 .5],'EdgeColor','none')
-            set(gca,'XTick',1:numel(equivclass_fraction),'XTickLabels',uniquevals(analysisstruct.behavior_order_numbers))
-            xtickangle(90)
-            box off
-        end
-        equivclass_fraction_agg{ll}{clusterhere} = equivclass_fraction;
-        hierarchystruct.uniquenames = uniquevals;
-        %goodclust(gcsorted(clusterhere))
-        
-        %  animate_markers_aligned_fullmovie(analysisstruct.mocapstruct_reduced_agg{1},...
-        %   round(unique(reshape(bsxfun(@plus,seq_inds_cluster*decimation_factor,-decimation_factor*2:1:decimation_factor*2),[],1))))
-        if do_save_videos
-            figure(388)
-            clf
-            plotfolder = strcat('Y:\Jesse\Data\Motionanalysis_captures\Cluster_videos\20181206_timescaleplots_',num2str(timescales(ll)),'\');
-            mkdir(plotfolder)
-            [~, biggestindiv] = sort(cellfun(@numel,indivbouts),'DESCEND')
-            M=plot_multi_clusters(analysisstruct.mocapstruct_reduced_agg{1},indivbouts(biggestindiv(1:6)),numel(indivbouts{1}))
-            v = VideoWriter(strcat(plotfolder,filesep,'clusteredmovie_',num2str((clusterhere))),'MPEG-4');
-            open(v)
-            writeVideo(v, M)
-            close(v)
-        end
-        
+
         %% get behaviors in cluster
         %% get the number of indiv bouts for each behavior
-        
-        boutlist = [];
-        for rr = 1:numel(indivbouts)
-            boutlist = cat(1,boutlist,rr*ones(numel(indivbouts{rr}),1));
-        end
-        boutnums = zeros(1,numel(allbehshere));
-        for llk = allbehshere
-            boutnums(find(allbehshere==llk)) = numel(unique(boutlist(find(base_annotation(cat(2,indivbouts{:}))==llk))));
-        end
-        
-        %behaviors in at least 1/8th
-        behs_in_cluster{clusterhere} = allbehshere(find(boutnums>=4));%floor(numel(indivbouts)./8)));
+%         
+%         boutlist = [];
+%         for rr = 1:numel(indivbouts)
+%             boutlist = cat(1,boutlist,rr*ones(numel(indivbouts{rr}),1));
+%         end
+%         boutnums = zeros(1,numel(allbehshere));
+%         for llk = allbehshere
+%             boutnums(find(allbehshere==llk)) = numel(unique(boutlist(find(base_annotation(cat(2,indivbouts{:}))==llk))));
+%         end
+%         
+%         %behaviors in at least 1/8th
+%         behs_in_cluster{clusterhere} = allbehshere(find(boutnums>=4));%floor(numel(indivbouts)./8)));
         
     end
     

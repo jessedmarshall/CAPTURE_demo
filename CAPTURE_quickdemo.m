@@ -69,51 +69,25 @@ set(gcf,'Position',([100 100 1100 1100]))
 animate_markers_nonaligned_fullmovie_demo(analysisstruct.mocapstruct_reduced_agg{1},...
     find(analysisstruct.annot_reordered{end}==100));
 
-
-%% make and label videos
-% clustuse=1;
-% params.snippet_size = 300;
-% params.snippet_res = 10;
-% params.snippet_frac = 1;
-% params.files_use = 99;
-% 
-% [agg_mocap_structs,agg_snippetinds,agg_mocap_preproc] = collect_mocap_snippets_allzvals(analysisstruct,1,params);
-% agg_mocap_structs_snippets = agg_mocap_structs;
-% agg_preproc = agg_mocap_preproc;
-% analysisstruct.agg_mocap_structs_snippets=agg_mocap_structs;
-% analysisstruct.agg_snippetinds=agg_snippetinds;
-% analysisstruct.agg_preproc=agg_mocap_preproc;
-% animalname = 'test';
-% 
-% mosaicfolder = strcat('X:\Jesse\ClusterVideos\test',animalname,filesep);
-% mkdir(mosaicfolder)
-% save_mosaicclusters(analysisstruct,clustuse,mosaicfolder,1);
-
-
-% save movies for clustering
-
-
 % or re-embed into Rat7M space
-
 MLmatobj = create_extra_behavioral_features(mocapstruct,coefficient_file,overwrite_coefficient);
-
-%visualize
 
 
 %% run sequence and state analysis
-   params.do_show_pdistmatrix =1;
-    params.decimation_factor = 5;
-    params.doclustering = 1;
-    
-    %clustering parameters
-    params.corr_threshold = 0.2;
+params.do_show_pdistmatrix =1;
+params.decimation_factor = 5;
+params.doclustering = 1;
+%clustering parameters
+params.corr_threshold = 0.2;
 params.clustercutoff = 0.65;
-    analysisstruct.plotdirectory = '';
-    params.timescales = [1./4]; %timescale to use, in s
-    
-    analysisstruct.conditionnames = {'test'};
+analysisstruct.plotdirectory = '';
+params.timescales = [1./4 2]; %timescale to use, in s
+
+analysisstruct.conditionnames = {'test'};
 analysisstruct.ratname = {'myrat'};
 
-    find_sequences_states_demo(analysisstruct,{'test'},params)
+hierarchystruct=    find_sequences_states_demo(analysisstruct,{'test'},params);
 
+animate_markers_nonaligned_fullmovie_demo(analysisstruct.mocapstruct_reduced_agg{1},...
+    find(hierarchystruct.clustered_behavior{1}==2));
 %visualize
