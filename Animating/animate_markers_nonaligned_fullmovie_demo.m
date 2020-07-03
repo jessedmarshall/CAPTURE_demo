@@ -5,10 +5,7 @@ h=figure(370)
 else
     h=fighand;
 end
-% frame_inds = time_ordering_fulltrace{jjj}(1:matlab_fr:min(frames_use,numel(time_ordering_fulltrace{jjj})));
 
-%M{jjj} = movie;
-%Mhere = movie;
 frame_last = 0;
 
 marker_plot = ones(1,numel(mocapstruct.markernames));
