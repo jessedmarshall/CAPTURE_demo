@@ -1,9 +1,9 @@
-function MLmatobj = create_extra_behavioral_features(mocapstruct,ratname,savefilename,overwrite_coeff)
+function MLmatobj = create_extra_behavioral_features(mocapstruct,ratname,savefilename,overwrite_coeff,eigenposture_save_folder)
 
 
 %% local pose/dynamics features
 % load saved eigenposture feature coefficients and dynamics coefficients
-eigenposture_save_folder = '';
+%eigenposture_save_folder = '';
 
 decimation_factor = 3;
 %parameters for hipass clip and clustering
@@ -98,7 +98,7 @@ dyn_coeff_file_markers = strcat(eigenposture_save_folder,filesep,'dynamics_coeff
         
         
         clipped_pre =  hipass_clip_fragments(mocapstruct.markers_aligned_preproc,framelist_true,params);
-        maxframes = size(clipped_pre.HeadF,1);
+        maxframes = size(clipped_pre.SpineF,1);
         
         for mm = mocapstruct.modular_cluster_properties.cluster_markersets{2}
             feature_mat_dyn = cat(2,feature_mat_dyn,clipped_pre.(mocapstruct.markernames{mm}));

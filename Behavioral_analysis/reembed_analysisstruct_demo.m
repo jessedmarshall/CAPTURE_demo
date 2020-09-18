@@ -50,7 +50,7 @@ for mm = 1:numel(clusterfields)
 end
 analysisstruct.params.reembed =1;
     analysisstruct.params.reorder=1;
-analysisstruct = compute_analysis_clusters(analysisstruct,analysisstruct.params);
+analysisstruct = compute_analysis_clusters_demo(analysisstruct,analysisstruct.params);
 
 
 

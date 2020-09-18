@@ -1,10 +1,37 @@
-function M = animate_markers_nonaligned_fullmovie(mocapstruct,frame_inds,fighand)
+function M = animate_markers_nonaligned_fullmovie_demo(mocapstruct,frame_inds,fighand,axisparams)
 %matlab_fr = 10;
-if nargin<3
-h=figure(370)
+if nargin<3 
+elseif isempty(fighand)
+    h=figure(370)
 else
     h=fighand;
 end
+
+%% the default case
+ [maxval] = max(mocapstruct.markers_preproc.SpineM,[],1);
+  [minval] =   min(mocapstruct.markers_preproc.SpineM,[],1);
+buffactor_axis = 1.3; %1.1
+buffactor_arena = 1.02;
+
+
+    th = 0:pi/100:2*pi;
+    xcent = (maxval(1)+minval(1))./2;
+      ycent = (maxval(1)+minval(1))./2;
+
+  
+
+      
+if nargin<4 || isempty(axisparams)
+          zlimvals = [-50 250];
+              xlimvals = [-(304*buffactor_axis- xcent) (304*buffactor_axis+ xcent)];
+      ylimvals = [-(304*buffactor_axis- ycent) (304*buffactor_axis+ ycent)];
+else
+    zlimvals = axisparams.zlim ;
+        xlimvals = axisparams.xlim ;
+    ylimvals = axisparams.ylim ;
+
+end
+
 
 frame_last = 0;
 
@@ -29,38 +56,33 @@ handle_base = line(xx,yy,zz,'Marker','o','Color',mocapstruct.markercolor{1},'Mar
     set(gca,'Ycolor',[1 1 1]);
     set(gca,'Zcolor',[1 1 1]);
     
-    zlim([-20 300])
-    xlim([-340 340])
-    ylim([-340 340])
+  %  zlim([200 350])
+   % xlim([-340 340])
+   % ylim([-340 340])
     set(gca,'XTickLabels',[],'YTickLabels',[],'ZTickLabels',[])
         view([-22, 12]);
         
         
-         [maxval] = max(mocapstruct.markers_preproc.SpineM,[],1);
-  [minval] =   min(mocapstruct.markers_preproc.SpineM,[],1);
-buffactor_axis = 1.3; %1.1
-buffactor_arena = 1.02;
-
-
-    set(gca,'Xcolor',[1 1 1 ]);
-    set(gca,'Ycolor',[1 1 1]);
-    set(gca,'Zcolor',[1 1 1]);
-    
-    th = 0:pi/100:2*pi;
-    xcent = (maxval(1)+minval(1))./2;
-      ycent = (maxval(1)+minval(1))./2;
+        
   
 xunit = 304*buffactor_arena * cos(th) + xcent;
 yunit = 304*buffactor_arena * sin(th) + ycent;
 zunit = zeros(1,numel(xunit));
 plot3(xunit,yunit,zunit,'w','linewidth',3);
 
- zlim([-50 250])
-    xlim([-(304*buffactor_axis- xcent) (304*buffactor_axis+ xcent)])
-    ylim([-(304*buffactor_axis- ycent) (304*buffactor_axis+ ycent)])
+ zlim(zlimvals)
+    xlim(xlimvals)
+    ylim(ylimvals)
     set(gca,'XTickLabels',[],'YTickLabels',[],'ZTickLabels',[])
+
 axis tight
         
+
+
+    set(gca,'Xcolor',[1 1 1 ]);
+    set(gca,'Ycolor',[1 1 1]);
+    set(gca,'Zcolor',[1 1 1]);
+    
 
    ax = gca;
 outerpos = ax.OuterPosition;
@@ -121,10 +143,12 @@ for lk = reshape(frame_inds,1,[])%1:10:10000
           end
       end
   end
-   zlim([-50 250])
-    xlim([-(304*buffactor_axis- xcent) (304*buffactor_axis+ xcent)])
-    ylim([-(304*buffactor_axis- ycent) (304*buffactor_axis+ ycent)])
-   % axis equal
+  
+ zlim(zlimvals)
+    xlim(xlimvals)
+    ylim(ylimvals)
+    set(gca,'XTickLabels',[],'YTickLabels',[],'ZTickLabels',[])
+
    
 axis off
 

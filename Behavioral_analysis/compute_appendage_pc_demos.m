@@ -56,6 +56,8 @@ COEFFS_appendages_lengths = cell(1,numel(appendage_names));
 COEFFS_appendages_euc = cell(1,numel(appendage_names));
 
 appendage_gps = 8;%[3:6];
+    save_coeffs = 0;
+
 fprintf('starting PCA over appendages \n')
 for kk = appendage_gps
     fprintf('group %f \n',kk);
@@ -77,11 +79,11 @@ for kk = appendage_gps
     %% load coeffs
     coeffname_appendage =strcat('COEFFS_appendages',num2str(kk));
     explainedname_appendage =strcat('EXPLAINED_appendages',num2str(kk));
-    
     if (~isfield(coeffstruct,coeffname_appendage) || overwrite_coeff)
         [COEFFS_appendages{kk}, ~, ~, ~,appendage_explained{kk}] = pca(squeeze(appendage_anglevals{kk}));
         coeffstruct.(coeffname_appendage) = COEFFS_appendages{kk};
         coeffstruct.(explainedname_appendage) = appendage_explained{kk};
+        save_coeffs = 1;
     else
         COEFFS_appendages{kk} = coeffstruct.(coeffname_appendage);
         appendage_explained{kk} = coeffstruct.(explainedname_appendage);
@@ -157,12 +159,13 @@ end
 %% ------------------------
 %save coeffs regardless
 fprintf('saving appendage coefficients \n')
+if save_coeffs
 try
-    save(coeffstruct_in,'-struct','coeffstruct','-v7.3')
+   save(coeffstruct_in,'-struct','coeffstruct','-v7.3')
 catch ME
     save(coeffstruct_in,'-struct','coeffstruct','-v7.3')
 end
-
+end
 %% apply the PCA to the smoothed dynamics
 
 

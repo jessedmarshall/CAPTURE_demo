@@ -3,9 +3,9 @@ function [wavelet_coeffs,wtAll,fr]= WaveletCluster(features, frames, opts ,wtpre
 % DEPENDENCIES:
 % addpath(genpath(...\Movement_analysis-master\MotionMapper-master\));
 % addpath(genpath(...\Movement_analysis-master\VbGm));
-addpath(genpath('D:\Kevin\repositories2\behavior-mapping\MotionMapper'));
-addpath(genpath('D:\Kevin\Motion_mapping\utilities'));
-addpath('D:\Kevin\Motion_mapping\VbGm');
+%addpath(genpath('D:\Kevin\repositories2\behavior-mapping\MotionMapper'));
+%addpath(genpath('D:\Kevin\Motion_mapping\utilities'));
+%addpath('D:\Kevin\Motion_mapping\VbGm');
 % clustering script using wavelet space, and GMM / vb method
 %
 % features is T x d (observations x dimensions)

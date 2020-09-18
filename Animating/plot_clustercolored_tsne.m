@@ -127,12 +127,12 @@ for k = 1:numel(analysisstruct.sorted_clust_ind')
     if sorted 
         khere = k;%analysisstruct.sorted_clust_ind(k);%analysisstruct.sorted_clust_ind(k);%(analysisstruct.sorted_clust_ind(k));%k;
     else
-        khere = (analysisstruct.sorted_clust_ind(k));
+        khere = find(analysisstruct.sorted_clust_ind==k);%
     end
         c = s2((khere)).Centroid;
 
     if numel(find(analysisstruct.annot_reordered{end,end}==khere))>plotthresh
-    text(analysisstruct.xx(floor(c(1))), analysisstruct.yy(floor(c(2))), num2str((khere)), ... %sprintf('%d', integer(ind)),
+    text(analysisstruct.xx(floor(c(1))), analysisstruct.yy(floor(c(2))), num2str((k)), ... %sprintf('%d', integer(ind)),
         'HorizontalAlignment', 'center', ...
         'VerticalAlignment', 'middle','Color','k','FontWeight','Bold');
     end

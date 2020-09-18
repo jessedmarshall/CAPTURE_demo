@@ -20,6 +20,7 @@ allangles_inds = [1,2,3]; %use on knees and arms
   % anglestruct = load_mouse_anglestruct() ;
   % anglestruct = load_mouse_kyle_anglestruct() ;
        anglestruct = load_default_anglestruct() ;
+       anglestruct = load_bird_anglestruct() ;
 
 segment_pairs=anglestruct.segment_pairs;
 coronal_pairs=anglestruct.coronal_pairs;

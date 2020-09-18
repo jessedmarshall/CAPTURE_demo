@@ -79,5 +79,12 @@ switch linkname
             [171 142 73]./255,[171 142 73]./255,... % R arm
             'g','c',...
             'm','m','k'};
+    case 'bird'
+        birdlinks = load('X:\Jesse\MotionAnalysisCaptures\DANNCE_animals\manuscript_formattedData\bird\bird18.mat');
+         links =birdlinks.joints_idx;
+            colors =birdlinks.color;
+      colors = num2cell(colors,2);
+links = num2cell(links,2);
+        
 end
 
