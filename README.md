@@ -45,3 +45,6 @@ input_params.repfactor = 5;
  Here `input_params.repfactor` is the difference between the recorded framerate and 300 Hz. So if your recordings are at 50 hz, then use `input_params.repfactor = 6`
  
  
+- Great! Now your files are preprocessed. Next create the analysis struct using `preprocess.m`. This function calls several other functions:
+- 
+-
