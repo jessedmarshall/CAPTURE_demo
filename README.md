@@ -28,3 +28,11 @@ The software is already included in the utilities folder.
 **Compatibility**.
 This code has been tested in 64-bit MATLAB 2017b and 2019b running on Windows 10.
 
+## QuickStart Demo
+- Download the DANNCE dataset from https://tinyurl.com/y9dwkuwo to get a `predictions.mat` file, or use your own!
+```matlab
+ filename_in = `predictions.mat`;
+ filename_out = 'predictions_preprocessed.mat';
+ species_name = 'my_animal'
+ preprocess_dannce(filename_in,filename_out,species_name)
+ ```
