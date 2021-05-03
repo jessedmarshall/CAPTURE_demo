@@ -1,4 +1,4 @@
-function ML_features = compute_joint_angles_demo(mocapstruct)
+function ML_features = compute_joint_angles_demo(mocapstruct,linkname)
 ML_features = struct();
 
 
@@ -17,10 +17,17 @@ transverse_inds = [1,2];
 allangles_inds = [1,2,3]; %use on knees and arms
 %transverse_pairs
 
-  % anglestruct = load_mouse_anglestruct() ;
-  % anglestruct = load_mouse_kyle_anglestruct() ;
+   anglestruct = load_mouse_kyle_anglestruct() ;
+  switch linkname
+      case 'rats'
        anglestruct = load_default_anglestruct() ;
+      case 'bird'
        anglestruct = load_bird_anglestruct() ;
+           case 'mouse'
+   anglestruct = load_mouse_anglestruct() ;
+      case 'kyle_mouse'
+             anglestruct = load_mouse_kyle_anglestruct() ;
+  end
 
 segment_pairs=anglestruct.segment_pairs;
 coronal_pairs=anglestruct.coronal_pairs;

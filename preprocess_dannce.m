@@ -7,10 +7,18 @@ function ratception_struct = preprocess_dannce(filein,fileoutput,animalname,inpu
 %                 struct containing each markers x-y-z prediction 
 %
 %         fileoutput: a .mat file 
-%         animalname: the name of the animal (default - rats) that
+%
+%         animalname: the name of the animal (default - "rats") that
 %             defines the number of links and markers to use for a given
-%             dataset in load_link_files
-%         input_params: 
+%             dataset in load_link_files.m. Other pre-defined options
+%             include: 'mouse' (14 marker) kyle_mouse (20 marker)
+%
+%         input_params: a struct containing experiment specific
+%                       information: the markers to use as
+%                       SpineF (SpineF_marker) and SpineM (SpineM_marker)
+%                       to align the animal, the relative framerate to 300
+%                       Hz (repfactor = 300/experiment framerate),
+%                       conversion factor (to scale the outputs)
 
 
 

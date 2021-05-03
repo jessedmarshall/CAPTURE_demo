@@ -1,7 +1,7 @@
-function ML_features = create_behavioral_features(mocapstruct,coeff_file,overwrite_coeff)
+function ML_features = create_behavioral_features(mocapstruct,coeff_file,overwrite_coeff,linkname)
 
 %% compute the joint angles
-ML_features = compute_joint_angles_demo(mocapstruct);
+ML_features = compute_joint_angles_demo(mocapstruct,linkname);
 %% compute the principal components of the joint angles and
 ML_features = compute_appendage_pc_demos(mocapstruct,ML_features,coeff_file,overwrite_coeff);
 %% compute the wavelet transform
