@@ -18,9 +18,11 @@ function [analysisstruct,hierarchystruct] =  CAPTURE_quickdemo(inputfile,ratname
 %                 (see preprocess_dannce)
 %      ratnames: a string containing the name of the experiment/rat to be
 %                used in saving files
-%      coefficientnames: preexisting names of coefficients or 
+%      coefficientnames: preexisting names of coefficients or file to save
+%                      tsne coefficients to. 
 %      linkname: the name of the animal (ie kyle_mouse or 'rats' or 'bird'
 %                 to be used in computing tsne features)
+%      
 
 %load mocap file
 if isempty(inputfile)
