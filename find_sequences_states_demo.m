@@ -156,6 +156,8 @@ for ll = 1:numel(timescales)
             end
             pdistmatrixhere(isnan(pdistmatrixhere)) = 0;
             
+            
+            
             L = watershed(pdistmatrixhere);%valplot_nonbiased(vals_1,vals_2));
             density_cc_temp = bwconncomp(L);
             numinds = cellfun(@numel,density_cc_temp.PixelIdxList);
@@ -164,7 +166,9 @@ for ll = 1:numel(timescales)
             goodinds = setxor(find(numinds>=size_threshold),maxind);
             for rr = goodinds
                 [sub1,sub2] = ind2sub(size(L),density_cc_temp.PixelIdxList{rr});
-                density_cc.PixelIdxList{end+1} = sub2ind([size(annotation_matrix_shifted_conv_agg,2) size(annotation_matrix_shifted_conv_agg,2)],...
+                density_cc.PixelIdxList{end+1} = ...
+                    sub2ind([size(annotation_matrix_shifted_conv_agg,2)...
+                    size(annotation_matrix_shifted_conv_agg,2)],...
                     bsxfun(@plus,sub1,(jj-1)*chopsize),bsxfun(@plus,sub2,(kk-1)*chopsize));
                 goodobj = goodobj+1;
             end
@@ -323,8 +327,10 @@ for ll = 1:numel(timescales)
         behshades_agg{clusterhere} = beh_shades_agg;        
 
         figure(395+ll)
-        h1=subplot_tight(7,3,clusterhere)
+        h1=subplot_tight(7,3,clusterhere);
+        if isfield(analysisstruct,'xx')
         plot_shaded_tsne_absolute_alpha(analysisstruct,normshades,[],1,h1,1)
+        end
         axis equal
         axis off
         colorbar off

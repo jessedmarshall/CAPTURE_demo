@@ -29,22 +29,10 @@ The software is already included in the utilities folder.
 This code has been tested in 64-bit MATLAB 2017b and 2019b running on Windows 10.
 
 ## QuickStart Demo
-- Download the DANNCE dataset from https://tinyurl.com/y9dwkuwo to get a `predictions.mat` file, navigate to the download directory and run
+- Download the DANNCE dataset from https://tinyurl.com/y9dwkuwo to get a `predictions.mat` file, or use your own!
 ```matlab
  filename_in = `predictions.mat`;
  filename_out = 'predictions_preprocessed.mat';
  species_name = 'my_animal'
  preprocess_dannce(filename_in,filename_out,species_name)
  ```
- To run this with your own species' `predictions.mat' generated using DANNCE, 
- ```matlab
- input_params.SpineM_marker = 'my_center_marker';
-input_params.SpineF_marker = 'my_front_of_spine';
-input_params.repfactor = 5; 
- ```
- Here `input_params.repfactor` is the difference between the recorded framerate and 300 Hz. So if your recordings are at 50 hz, then use `input_params.repfactor = 6`
- 
- 
-- Great! Now your files are preprocessed. Next create the analysis struct using `preprocess.m`. This function calls several other functions:
-- 
--

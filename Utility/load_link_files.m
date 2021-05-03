@@ -1,4 +1,9 @@
 function [links,colors] = load_link_files(linkname)
+% this file loads the links for pre-defined skeletons made using DANNCE
+% Rats - the 20 marker CAPTURE dataset
+% Mouse - the 14 marker low-res mouse recordings
+% kylemouse - the 20 marker kyle skeleton
+
 
 switch linkname
     

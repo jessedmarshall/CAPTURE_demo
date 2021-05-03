@@ -21,10 +21,12 @@ marker_plot = ones(1,numel(mocapstruct.markernames));
 %         squeeze(mocapstruct.markers_aligned_preproc.(mocapstruct.markernames{1})(1,3)),'o','Color',mocapstruct.markercolor{1},'MarkerFaceColor',mocapstruct.markercolor{1},'MarkerSize',6)
 %    
     
+msize = 6;
+
 xx = squeeze(mocapstruct.markers_aligned_preproc.(mocapstruct.markernames{1})(1,1));
 yy = squeeze(mocapstruct.markers_aligned_preproc.(mocapstruct.markernames{1})(1,2));
 zz = squeeze(mocapstruct.markers_aligned_preproc.(mocapstruct.markernames{1})(1,3));
-line(xx,yy,zz,'Marker','o','Color',mocapstruct.markercolor{1},'MarkerFaceColor',mocapstruct.markercolor{1},'MarkerSize',6);
+line(xx,yy,zz,'Marker','o','Color',mocapstruct.markercolor{1},'MarkerFaceColor',mocapstruct.markercolor{1},'MarkerSize',msize);
 
     
     ax = gca;
@@ -58,11 +60,6 @@ line(xx,yy,zz,'Marker','o','Color',mocapstruct.markercolor{1},'MarkerFaceColor',
        % datestr(datenum(mocapstruct_social.mocapfiletimes{1})+300./(300*60*60*24))
 for lk = reshape(frame_inds,1,[])%1:10:10000
      cla;
-    
-  %  set(handles.t4,'String',num2str(lk));
-    
-msize = 6;
-    
     ind_to_plot = lk;
 
     %% Plot markers that are tracked in the frame
