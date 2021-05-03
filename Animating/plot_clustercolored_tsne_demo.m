@@ -1,9 +1,25 @@
 function [h2,colors,clustersused] = plot_clustercolored_tsne_demo(analysisstruct,iter,wshedflag,h2,params)
- % subplot(1,2,1)
-% for nn = 1:numel(conditions)
-%       plot(0,0,'o','MarkerSize',8,'Color',colors(nn,:),'MarkerFaceColor',colors(nn,:))
-%     hold on
-% end
+% Inputs. 
+%    Analysisstruct - a behavioral analysisstruct 
+%    Iter: an index to change the figure number
+%    wshedflag: a flag indicating whether or not to plot the watershed
+%    h2: a figure handle input
+%    params: a paramters struct with inputs:
+%           params.nameplot: whether to plot cluster names
+%           params.density_plot: whether to plot as a density map
+%           params.watershed: whether to overlay watershed lines
+%           params.sorted:  whether to use the sorted cluster anmes
+%           params.markersize: size of markers in the tsne plot
+%           params.coarseboundary: whether to plot the coarse cluster
+%           boundary, if present
+%           params.do_coarse: whether to do coarse
+
+
+
+
+%Outputs.
+%    h2. handle to the figure
+%    colors: 
 
 % if plotting points by their coarse names
 coarse_names = {'Rearing','LGroom','RGroom','LScratch','RScratch','FaceGroom','PostureAdjust','Walk','WetDogShake','Other'};
