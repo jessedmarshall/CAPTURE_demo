@@ -1,4 +1,17 @@
-%% Demo for CAPTURE Data
+
+
+
+function [analysisstruct,hierarchystruct] =  CAPTURE_quickdemo(inputfile,ratnames,coefficientfilename,linkname)
+% File to generate tsne features and run reembedding on a mouse
+%      inputfile: a .mat file that contains a preprocessed dannce struct
+%                 (see preprocess_dannce)
+%      ratnames: a string containing the name of the experiment/rat to be
+%                used in saving files
+%      coefficientnames: preexisting names of coefficients or file to save
+%                      tsne coefficients to. 
+%      linkname: the name of the animal (ie kyle_mouse or 'rats' or 'bird'
+%                 to be used in computing tsne features)
+%      
 % This repository contains contributions from the following FEX/Open source contributions which are included:
 %Chronux
 %Pca Randomized
@@ -11,18 +24,6 @@
 %     Harvard University 
 
 
-function [analysisstruct,hierarchystruct] =  CAPTURE_quickdemo(inputfile,ratnames,coefficientfilename,linkname)
-
-% File to generate tsne features and run reembedding on a mouse
-%      inputfile: a .mat file that contains a preprocessed dannce struct
-%                 (see preprocess_dannce)
-%      ratnames: a string containing the name of the experiment/rat to be
-%                used in saving files
-%      coefficientnames: preexisting names of coefficients or file to save
-%                      tsne coefficients to. 
-%      linkname: the name of the animal (ie kyle_mouse or 'rats' or 'bird'
-%                 to be used in computing tsne features)
-%      
 
 %load mocap file
 if isempty(inputfile)
@@ -69,7 +70,12 @@ overwrite_coefficient=1;
 %animate_markers_nonaligned_fullmovie_demo(mocapstruct,1:10:10000);
 
 %% Create behavioral features
+%this determines the set of frames to use -- in general if the animal is
+%resting for too long it will cause errors
 mocapstruct.modular_cluster_properties.clipped_index{8} = 1:size(mocapstruct.aligned_mean_position,1 );
+
+% to control the wavelet parameters, you can change the properties in the
+% compute_wl_transform_features file
 if ~exist(MLmatobjfile,'file') || overwrite_MLmatobjfile
 MLmatobj = create_behavioral_features(mocapstruct,coefficient_file,overwrite_coefficient,linkname);
 else
@@ -104,6 +110,7 @@ analysisstruct.conditionnames = ratname;
 analysisstruct.ratnames = ratname;
 analysisstruct.filesizes = {size(mocapstruct.aligned_mean_position,1 );};
 
+%% plot a tsne map -- see plotting script for parameter definitions
 h1=figure(609)
 clf;
 params.nameplot=0;
