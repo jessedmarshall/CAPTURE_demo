@@ -40,7 +40,7 @@ ratception_struct_temp.markers.(markernames{ll}) = ...
 end
 ratception_struct_temp.markers_preproc = ratception_struct_temp.markers;
 
-ratception_struct_temppreproc = compute_preprocessed_mocapstruct(ratception_struct_temp,preprocessing_parameters);
+ratception_struct_temppreproc = compute_preprocessed_mocapstruct_demo(ratception_struct_temp,preprocessing_parameters);
 
 
 if (rk==1)

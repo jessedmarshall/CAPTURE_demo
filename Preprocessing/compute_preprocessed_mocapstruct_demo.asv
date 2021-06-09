@@ -46,8 +46,7 @@ for ll = 1:numel(marker_names)
     marker_velocity(ll,frames_to_mask,4) = 0;
     abs_velocity_antialiased(ll,:) =  filtfilt(f1,f2, marker_velocity(ll,:,4));
     marker_velocity(ll,frames_to_mask,4) = nan;
-    abs_velocity_antialiased(ll,frames_to_mask) = nan;
-    
+    abs_velocity_antialiased(ll,frames_to_mask)
     for lk = (ll+1):num_markers
         distance_here =   (markers_preproc.(marker_names{ll})-markers_preproc.(marker_names{lk}));
     end
